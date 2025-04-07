@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+<<<<<<< HEAD
 use App\Models\Produk;
+=======
+use App\Models\Product;
+>>>>>>> 565bb27 (First commit)
 use App\Models\Kategori;
 use App\Models\FotoProduk;
 use App\Helpers\ImageHelper;
@@ -15,12 +19,21 @@ class ProdukController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         $produk = Produk::orderBy('updated_at', 'desc')->get();
+=======
+        $produk = Product::orderBy('updated_at', 'desc')->get();
+>>>>>>> 565bb27 (First commit)
         return view('backend.v_produk.index', [
             'judul' => 'Data Produk',
             'index' => $produk
         ]);
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 565bb27 (First commit)
     /**
      * Show the form for creating a new resource.
      */
@@ -32,11 +45,20 @@ class ProdukController extends Controller
             'kategori' => $kategori
         ]);
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 565bb27 (First commit)
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD
+=======
+        // Validasi input dari form
+>>>>>>> 565bb27 (First commit)
         $validatedData = $request->validate([
             'kategori_id' => 'required',
             'nama_produk' => 'required|max:255|unique:produk',
@@ -45,6 +67,7 @@ class ProdukController extends Controller
             'berat' => 'required',
             'stok' => 'required',
             'foto' => 'required|image|mimes:jpeg,jpg,png,gif|file|max:1024',
+<<<<<<< HEAD
         ], $messages = [
             'foto.image' => 'Format gambar gunakan file dengan ekstensi jpeg, jpg, png, atau gif.',
             'foto.max' => 'Ukuran file gambar Maksimal adalah 1024 KB.'
@@ -52,11 +75,24 @@ class ProdukController extends Controller
         $validatedData['user_id'] = auth()->id();
         $validatedData['status'] = 0;
 
+=======
+        ], [
+            'foto.image' => 'Format gambar gunakan file dengan ekstensi jpeg, jpg, png, atau gif.',
+            'foto.max' => 'Ukuran file gambar Maksimal adalah 1024 KB.'
+        ]);
+
+        // Menambahkan user_id otomatis
+        $validatedData['user_id'] = auth()->id();
+        $validatedData['status'] = 0; // Menetapkan status default
+
+        // Proses upload foto
+>>>>>>> 565bb27 (First commit)
         if ($request->file('foto')) {
             $file = $request->file('foto');
             $extension = $file->getClientOriginalExtension();
             $originalFileName = date('YmdHis') . '_' . uniqid() . '.' . $extension;
             $directory = 'storage/img-produk/';
+<<<<<<< HEAD
             // Simpan gambar asli
             $fileName = ImageHelper::uploadAndResize($file, $directory, $originalFileName);
             $validatedData['foto'] = $fileName;
@@ -75,12 +111,41 @@ class ProdukController extends Controller
         Produk::create($validatedData, $messages);
         return redirect()->route('backend.produk.index')->with('success', 'Data berhasil tersimpan');
     }
+=======
+
+            // Simpan gambar asli
+            $fileName = ImageHelper::uploadAndResize($file, $directory, $originalFileName);
+            $validatedData['foto'] = $originalFileName;
+
+            // Membuat thumbnail
+            $thumbnailLg = 'thumb_lg_' . $originalFileName;
+            ImageHelper::uploadAndResize($file, $directory, $thumbnailLg, 800, null);
+            $thumbnailMd = 'thumb_md_' . $originalFileName;
+            ImageHelper::uploadAndResize($file, $directory, $thumbnailMd, 500, 519);
+            $thumbnailSm = 'thumb_sm_' . $originalFileName;
+            ImageHelper::uploadAndResize($file, $directory, $thumbnailSm, 100, 110);
+        }
+
+        // Menyimpan data produk ke database
+        Product::create($validatedData);
+
+        return redirect()->route('backend.produk.index')->with('success', 'Data berhasil tersimpan');
+    }
+
+
+>>>>>>> 565bb27 (First commit)
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
+<<<<<<< HEAD
         $produk = Produk::with('fotoProduk')->findOrFail($id);
+=======
+        //
+
+        $produk = Product::with('gambar')->findOrFail($id);
+>>>>>>> 565bb27 (First commit)
         $kategori = Kategori::orderBy('nama_kategori', 'asc')->get();
         return view('backend.v_produk.show', [
             'judul' => 'Detail Produk',
@@ -88,12 +153,64 @@ class ProdukController extends Controller
             'kategori' => $kategori
         ]);
     }
+<<<<<<< HEAD
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
         $produk = Produk::findOrFail($id);
+=======
+
+    /**
+     * Remove the specified resource from storage.
+     */
+
+    public function storeFoto(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'produk_id' => 'required|exists:produk,id',
+            'foto_produk.*' => 'image|mimes:jpeg,jpg,png,gif|file|max:1024',
+        ]);
+        if ($request->hasFile('foto_produk')) {
+            foreach ($request->file('foto_produk') as $file) {
+                // Buat nama file yang unik
+                $extension = $file->getClientOriginalExtension();
+                $filename = date('YmdHis') . '_' . uniqid() . '.' . $extension;
+                $directory = 'storage/img-produk/';
+                // Simpan dan resize gambar menggunakan ImageHelper
+                ImageHelper::uploadAndResize($file, $directory, $filename, 800, null);
+                // Simpan data ke database
+                FotoProduk::create([
+                    'produk_id' => $request->produk_id,
+                    'foto' => $filename,
+                ]);
+            }
+        }
+        return redirect()->route('backend.produk.show', $request->produk_id)
+            ->with('success', 'Foto berhasil ditambahkan.');
+    }
+
+    public function destroyFoto($id)
+    {
+        $foto = FotoProduk::findOrFail($id);
+        $produkId = $foto->produk_id;
+        // Hapus file gambar dari storage
+        $imagePath = public_path('storage/img-produk/') . $foto->foto;
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        }
+        // Hapus record dari database
+        $foto->delete();
+        return redirect()->route('backend.produk.show', $produkId)
+            ->with('success', 'Foto berhasil dihapus.');
+    }
+
+    public function edit(string $id)
+    {
+        $produk = Product::findOrFail($id);
+>>>>>>> 565bb27 (First commit)
         $kategori = Kategori::orderBy('nama_kategori', 'asc')->get();
         return view('backend.v_produk.edit', [
             'judul' => 'Ubah Produk',
@@ -101,14 +218,22 @@ class ProdukController extends Controller
             'kategori' => $kategori
         ]);
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 565bb27 (First commit)
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
         //ddd($request);
+<<<<<<< HEAD
         $produk = Produk::findOrFail($id);
 
+=======
+        $produk = Product::findOrFail($id);
+>>>>>>> 565bb27 (First commit)
         $rules = [
             'nama_produk' => 'required|max:255|unique:produk,nama_produk,' . $id,
             'kategori_id' => 'required',
@@ -120,7 +245,12 @@ class ProdukController extends Controller
             'foto' => 'image|mimes:jpeg,jpg,png,gif|file|max:1024',
         ];
         $messages = [
+<<<<<<< HEAD
             'foto.image' => 'Format gambar gunakan file dengan ekstensi jpeg, jpg, png, atau gif.',
+=======
+            'foto.image' => 'Format gambar gunakan file dengan ekstensi jpeg, jpg, png, 
+atau gif.',
+>>>>>>> 565bb27 (First commit)
             'foto.max' => 'Ukuran file gambar Maksimal adalah 1024 KB.'
         ];
         $validatedData['user_id'] = auth()->id();
@@ -167,6 +297,7 @@ class ProdukController extends Controller
             // Simpan nama file asli di database
             $validatedData['foto'] = $originalFileName;
         }
+<<<<<<< HEAD
 
         $produk->update($validatedData);
         return redirect()->route('backend.produk.index')->with('success', 'Data berhasil diperbaharui');
@@ -177,6 +308,16 @@ class ProdukController extends Controller
     public function destroy($id)
     {
         $produk = Produk::findOrFail($id);
+=======
+        $produk->update($validatedData);
+        return redirect()->route('backend.produk.index')->with('success', 'Data berhasil 
+diperbaharui');
+    }
+
+    public function destroy($id)
+    {
+        $produk = Product::findOrFail($id);
+>>>>>>> 565bb27 (First commit)
         $directory = public_path('storage/img-produk/');
         if ($produk->foto) {
             // Hapus gambar asli
@@ -210,6 +351,7 @@ class ProdukController extends Controller
             $fotoProduk->delete();
         }
         $produk->delete();
+<<<<<<< HEAD
         return redirect()->route('backend.produk.index')->with('success', 'Data berhasil dihapus');
     }
     // Method untuk menyimpan foto tambahan
@@ -256,22 +398,37 @@ class ProdukController extends Controller
     }
 
     // Method untuk Form Laporan Produk
+=======
+        return redirect()->route('backend.produk.index')->with('success', 'Data berhasil 
+dihapus');
+    }
+
+>>>>>>> 565bb27 (First commit)
     public function formProduk()
     {
         return view('backend.v_produk.form', [
             'judul' => 'Laporan Data Produk',
         ]);
     }
+<<<<<<< HEAD
     // Method untuk Cetak Laporan Produk
     public function cetakProduk(Request $request)
     {
         // Menambahkan aturan validasi
+=======
+
+    // Method untuk Cetak Laporan Produk 
+    public function cetakProduk(Request $request)
+    {
+        // Menambahkan aturan validasi 
+>>>>>>> 565bb27 (First commit)
         $request->validate([
             'tanggal_awal' => 'required|date',
             'tanggal_akhir' => 'required|date|after_or_equal:tanggal_awal',
         ], [
             'tanggal_awal.required' => 'Tanggal Awal harus diisi.',
             'tanggal_akhir.required' => 'Tanggal Akhir harus diisi.',
+<<<<<<< HEAD
             'tanggal_akhir.after_or_equal' => 'Tanggal Akhir harus lebih besar atau sama dengan Tanggal Awal.',
         ]);
         $tanggalAwal = $request->input('tanggal_awal');
@@ -279,6 +436,17 @@ class ProdukController extends Controller
 
         $query = Produk::whereBetween('updated_at', [$tanggalAwal, $tanggalAkhir])
             ->orderBy('id', 'desc');
+=======
+            'tanggal_akhir.after_or_equal' => 'Tanggal Akhir harus lebih besar atau sama 
+ dengan Tanggal Awal.',
+        ]);
+
+        $tanggalAwal = $request->input('tanggal_awal');
+        $tanggalAkhir = $request->input('tanggal_akhir');
+        $query =  Product::whereBetween('updated_at', [$tanggalAwal, $tanggalAkhir])
+            ->orderBy('id', 'desc');
+
+>>>>>>> 565bb27 (First commit)
         $produk = $query->get();
         return view('backend.v_produk.cetak', [
             'judul' => 'Laporan Produk',
@@ -287,4 +455,43 @@ class ProdukController extends Controller
             'cetak' => $produk
         ]);
     }
+<<<<<<< HEAD
+=======
+
+    public function detail($id)
+    {
+        $fotoProdukTambahan = FotoProduk::where('produk_id', $id)->get();
+        $detail = Product::findOrFail($id);
+        $kategori = Kategori::orderBy('nama_kategori', 'desc')->get();
+        return view('v_produk.detail', [
+            'judul' => 'Detail Produk',
+            'kategori' => $kategori,
+            'row' => $detail,
+            'fotoProdukTambahan' => $fotoProdukTambahan
+        ]);
+    }
+
+    public function produkKategori($id)
+    {
+        $kategori = Kategori::orderBy('nama_kategori', 'desc')->get();
+        $produk = Product::where('kategori_id', $id)->where('status', 1)
+            ->orderBy('updated_at', 'desc')->paginate(6);
+        return view('v_produk.produkkategori', [
+            'judul' => 'Filter Kategori',
+            'kategori' => $kategori,
+            'produk' => $produk,
+        ]);
+    }
+
+    public function produkAll() 
+    { 
+        $kategori = Kategori::orderBy('nama_kategori', 'desc')->get(); 
+        $produk = Product::where('status', 1)->orderBy('updated_at', 'desc')->paginate(6); 
+        return view('v_produk.index', [ 
+            'judul' => 'Semua Produk', 
+            'kategori' => $kategori, 
+            'produk' => $produk, 
+        ]);
+    }
+>>>>>>> 565bb27 (First commit)
 }

@@ -17,10 +17,17 @@
 </style>
 <table>
     <!-- <tr>
+<<<<<<< HEAD
 <td align="center">
 <img src="{{ asset('images/header.png') }}" width="50%">
 </td>
 </tr> -->
+=======
+        <td align="center">
+            <img src="{{ asset('images/header.png') }}" width="50%">
+        </td>
+    </tr> -->
+>>>>>>> 565bb27 (First commit)
     <tr>
         <td align="left">
             Perihal : {{ $judul }} <br>
@@ -42,6 +49,7 @@
     </thead>
     <tbody>
         @foreach ($cetak as $row)
+<<<<<<< HEAD
         <tr>
             <td> {{ $loop->iteration }}</td>
             <td> {{ $row->kategori->nama_kategori }} </td>
@@ -57,6 +65,24 @@
             <td> {{ $row->stok }} </td>
         </tr>
         @endforeach
+=======
+            <tr>
+                <td> {{ $loop->iteration }}</td>
+                <td> {{ $row->kategori->nama_kategori }} </td>
+                <td>
+                    @if ($row->status == 1)
+                        Publis
+                    @elseif($row->status == 0)
+                        Blok
+                    @endif
+                </td>
+                <td> {{ $row->nama_produk }} </td>
+                <td> Rp. {{ number_format($row->harga, 0, ',', '.') }} </td>
+                <td> {{ $row->stok }} </td>
+            </tr>
+        @endforeach
+
+>>>>>>> 565bb27 (First commit)
     </tbody>
 </table>
 
@@ -68,4 +94,8 @@
     function printStruk() {
         window.print();
     }
+<<<<<<< HEAD
 </script>
+=======
+</script>
+>>>>>>> 565bb27 (First commit)

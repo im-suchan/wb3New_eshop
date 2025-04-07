@@ -9,6 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
+<<<<<<< HEAD
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('image/icon_univ_bsi.png') }}">
     <title>Toko Online</title>
     <!-- Custom CSS -->
@@ -18,12 +19,27 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+=======
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('image/icon_univ_bsi.png') }}">
+    <title>tokoonline</title>
+    <!-- Custom CSS -->
+    <link href="{{ asset('backend/dist/css/style.min.css') }}" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+>>>>>>> 565bb27 (First commit)
 <![endif]-->
 </head>
 
 <body>
+<<<<<<< HEAD
     <div class="main-wrapper">
         <!-- ============================================================== -->
+=======
+    <div class="main-wrapper" <!--==============================================================-->
+>>>>>>> 565bb27 (First commit)
         <!-- Preloader - style you can find in spinners.css -->
         <!-- ============================================================== -->
         <div class="preloader">
@@ -38,6 +54,7 @@
         <!-- ============================================================== -->
         <!-- Login box.scss -->
         <!-- ============================================================== -->
+<<<<<<< HEAD
         <div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-dark">
             <div class="auth-box bg-dark border-top border-secondary">
                 <div id="loginform">
@@ -54,11 +71,33 @@
                     @endif
                     <!-- errorEnd -->
                     <form class="form-horizontal m-t-20" id="loginform" action="{{route('backend.login') }}" method="post">
+=======
+        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center 
+bg-dark">
+            <div class="auth-box bg-dark border-top border-secondary">
+                <div id="loginform">
+                    <div class="text-center p-t-20 p-b-20">
+                        <span class="db"><img src="{{ asset('backend/images/logo.png') }}" alt="logo" /></span>
+                    </div>
+                    <!-- Form -->
+                    <!-- error -->
+                    @if (session()->has('error'))
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <strong>{{ session('error') }} </strong>
+                        </div>
+                    @endif
+                    <!-- errorEnd -->
+                    <form class="form-horizontal m-t-20" id="loginform" action="{{ route('backend.login') }}"
+                        method="post">
+>>>>>>> 565bb27 (First commit)
                         @csrf
                         <div class="row p-b-30">
                             <div class="col-12">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
+<<<<<<< HEAD
                                         <span class="input-group-text bg-success text-white" id="basic-addon1"><i class="ti-user"></i></span>
                                     </div>
                                     <input type="text" name="email"
@@ -68,10 +107,25 @@
                                         role="alert">
                                         {{$message}}
                                     </span>
+=======
+                                        <span class="input-group-text bg-success text-white" id="basic-addon1"><i
+                                                class="ti-user"></i></span>
+                                    </div>
+                                    <input type="text" name="email" value="{{ old('email') }}"
+                                        class="form-control form-control-lg @error('email') is-invalid 
+@enderror"
+                                        placeholder="Masukkan Email" aria-label="Username"
+                                        aria-describedby="basic-addon1">
+                                    @error('email')
+                                        <span class="invalid-feedback alert-danger" role="alert">
+                                            {{ $message }}
+                                        </span>
+>>>>>>> 565bb27 (First commit)
                                     @enderror
                                 </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
+<<<<<<< HEAD
                                         <span class="input-group-text bg-warning text-white" id="basic-addon2"><i class="ti-pencil"></i></span>
                                     </div>
                                     <input type="password" name="password" class="form-control form-control-lg @error('password') is-invalid @enderror" placeholder="Masukkan Password" aria-label="Password" aria-describedby="basic-addon1">
@@ -80,6 +134,20 @@
                                         role="alert">
                                         {{$message}}
                                     </span>
+=======
+                                        <span class="input-group-text bg-warning text-white" id="basic-addon2"><i
+                                                class="ti-pencil"></i></span>
+                                    </div>
+                                    <input type="password" name="password"
+                                        class="form-control form-control-lg @error('password') is-invalid @enderror"
+                                        placeholder="Masukkan 
+Password" aria-label="Password"
+                                        aria-describedby="basic-addon1">
+                                    @error('password')
+                                        <span class="invalid-feedback alert-danger" role="alert">
+                                            {{ $message }}
+                                        </span>
+>>>>>>> 565bb27 (First commit)
                                     @enderror
                                 </div>
                             </div>
@@ -88,20 +156,34 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <div class="p-t-20">
+<<<<<<< HEAD
                                         <button class="btn btn-info" id="to-recover"
                                             type="button"><i class="fa fa-lock m-r-5"></i> Lost password?</button>
                                         <button class="btn btn-success float-right"
                                             type="submit">Login</button>
+=======
+                                        <button class="btn btn-info" id="to-recover" type="button"><i
+                                                class="fa fa-lock m-r-5"></i> Lost password?</button>
+                                        <button class="btn btn-success float-right" type="submit">Login</button>
+>>>>>>> 565bb27 (First commit)
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
+<<<<<<< HEAD
 
                 </div>
                 <div id="recoverform">
                     <div class="text-center">
                         <span class="text-white">Enter your e-mail address below and we will send you instructions how to recover a password.</span>
+=======
+                </div>
+                <div id="recoverform">
+                    <div class="text-center">
+                        <span class="text-white">Enter your e-mail address below and we
+                            will send you instructions how to recover a password.</span>
+>>>>>>> 565bb27 (First commit)
                     </div>
                     <div class="row m-t-20">
                         <!-- Form -->
@@ -109,15 +191,30 @@
                             <!-- email -->
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
+<<<<<<< HEAD
                                     <span class="input-group-text bg-danger text-white" id="basic-addon1"><i class="ti-email"></i></span>
                                 </div>
                                 <input type="text" class="form-control form-control-lg" placeholder="Email Address" aria-label="Username" aria-describedby="basic-addon1">
+=======
+                                    <span class="input-group-text bg-danger text-white" id="basic-addon1"><i
+                                            class="ti-email"></i></span>
+                                </div>
+                                <input type="text" class="form-control form-control-lg" placeholder="Email Address"
+                                    aria-label="Username" aria-describedby="basic-addon1">
+>>>>>>> 565bb27 (First commit)
                             </div>
                             <!-- pwd -->
                             <div class="row m-t-20 p-t-20 border-top border-secondary">
                                 <div class="col-12">
+<<<<<<< HEAD
                                     <a class="btn btn-success" href="#" id="to-login" name="action">Back To Login</a>
                                     <button class="btn btn-info float-right" type="button" name="action">Recover</button>
+=======
+                                    <a class="btn btn-success" href="#" id="to-login" name="action">Back To
+                                        Login</a>
+                                    <button class="btn btn-info float-right" type="button"
+                                        name="action">Recover</button>
+>>>>>>> 565bb27 (First commit)
                                 </div>
                             </div>
                         </form>
@@ -144,30 +241,50 @@
     <!-- ============================================================== -->
     <!-- All Required js -->
     <!-- ============================================================== -->
+<<<<<<< HEAD
     <script src="{{asset ('backend/assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="{{asset ('backend/assets/libs/popper.js/dist/umd/popper.min.js') }}"></script>
     <script src="{{asset ('backend/assets/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+=======
+    <script src="{{ asset('backend/libs/jquery/dist/jquery.min.js') }}"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="{{ asset('backend/libs/popper.js/dist/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('backend/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+>>>>>>> 565bb27 (First commit)
     <!-- ============================================================== -->
     <!-- This page plugin js -->
     <!-- ============================================================== -->
     <script>
         $('[data-toggle="tooltip"]').tooltip();
         $(".preloader").fadeOut();
+<<<<<<< HEAD
         // ==============================================================
         // Login and Recover Password
         // ==============================================================
+=======
+        // ============================================================== 
+        // Login and Recover Password 
+        // ============================================================== 
+>>>>>>> 565bb27 (First commit)
         $('#to-recover').on("click", function() {
             $("#loginform").slideUp();
             $("#recoverform").fadeIn();
         });
         $('#to-login').click(function() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 565bb27 (First commit)
             $("#recoverform").hide();
             $("#loginform").fadeIn();
         });
     </script>
+<<<<<<< HEAD
 
 </body>
 
 </html>
+=======
+</body>
+>>>>>>> 565bb27 (First commit)

@@ -1,3 +1,7 @@
 *
+<<<<<<< HEAD
+=======
+!private/
+>>>>>>> 565bb27 (First commit)
 !public/
 !.gitignore
